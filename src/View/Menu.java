@@ -6,8 +6,29 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Menu {
 
+    BufferedImage background;
+    BufferedImage logo;
+    BufferedImage exit;
+    BufferedImage startClassic;
+    BufferedImage startArcade;
+    BufferedImage highScore;
+    BufferedImage ninjaMan;
+
+
+    public Menu(BufferedImage background, BufferedImage logo, BufferedImage exit, BufferedImage startClassic, BufferedImage startArcade, BufferedImage highScore, BufferedImage ninjaMan) {
+
+        this.background = background;
+        this.logo = logo;
+        this.exit = exit;
+        this.startClassic = startClassic;
+        this.startArcade = startArcade;
+        this.highScore = highScore;
+        this.ninjaMan = ninjaMan;
+    }
 
     public void start(Stage menuStage)
     {
@@ -17,8 +38,8 @@ public class Menu {
         menuStage.setResizable(false);
         Pane root = new Pane();
 
-        Image background = new Image("file:Fruit_Ninja_Materials/Background.jpg");
-        ImageView bg = new ImageView(background);
+
+        ImageView bg = new ImageView(background.getImage());
 
         Image logo = new Image("file:Fruit_Ninja_Materials/logo.png");
         ImageView title = new ImageView(logo);
@@ -27,37 +48,36 @@ public class Menu {
         title.setX(-300);
         title.setY(-100);
 
-        Image exit = new Image("file:Fruit_Ninja_Materials/exit.png");
-        ImageView quit = new ImageView(exit);
+
+        ImageView quit = new ImageView(exit.getImage());
         quit.setScaleX(0.21);
         quit.setScaleY(0.21);
         quit.setX(250);
         quit.setY(350);
         quit.setOnMouseClicked(e -> System.exit(0));
 
-        Image startClassic = new Image("file:Fruit_Ninja_Materials/Classic.png");
-        ImageView Classic = new ImageView(startClassic);
+        ImageView Classic = new ImageView(startClassic.getImage());
         Classic.setScaleX(1.8);
         Classic.setScaleY(1.8);
         Classic.setX(480);
         Classic.setY(400);
 
-        Image startArcade = new Image("file:Fruit_Ninja_Materials/Arcade.png");
-        ImageView Arcade = new ImageView(startArcade);
+
+        ImageView Arcade = new ImageView(startArcade.getImage());
         Arcade.setScaleX(1.8);
         Arcade.setScaleY(1.8);
         Arcade.setX(250);
         Arcade.setY(400);
 
-        Image highScore = new Image("file:Fruit_Ninja_Materials/HS.png");
-        ImageView HS = new ImageView(highScore);
+
+        ImageView HS = new ImageView(highScore.getImage());
         HS.setScaleX(0.4);
         HS.setScaleY(0.4);
         HS.setX(580);
         HS.setY(280);
 
-        Image ninjaMan = new Image("file:Fruit_Ninja_Materials/man.png");
-        ImageView man = new ImageView(ninjaMan);
+
+        ImageView man = new ImageView(ninjaMan.getImage());
         man.setScaleX(0.25);
         man.setScaleY(0.25);
         man.setX(-150);

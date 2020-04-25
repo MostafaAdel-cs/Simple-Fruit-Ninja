@@ -1,5 +1,7 @@
 package Model.GameObjects;
 
+import View.BufferedImage;
+
 public abstract class GameObject {
     private int xLocation;
     private int yLocation;
@@ -37,6 +39,22 @@ public abstract class GameObject {
         return hasMovedOffScreen;
     }
 
+    public void slice(){
+        isSliced=true;
+    }
+
+    public void move (double time)
+    {
+
+    }
+
+    public BufferedImage [] getBufferedImages()
+    {
+
+
+
+        return null;
+    }
 
 
 
