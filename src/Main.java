@@ -1,5 +1,5 @@
-package View;
-
+import View.BufferedImage;
+import View.Menu;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
