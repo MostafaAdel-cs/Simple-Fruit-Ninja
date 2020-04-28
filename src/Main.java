@@ -1,5 +1,7 @@
-package gui;
 
+import View.ArcadeGame;
+import View.ClassicGame;
+import View.HighScores;
 import View.Menu;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -7,8 +9,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    Stage menuStage = new Stage();
-    Menu menu = new Menu();
+
+
 
 
     public static void main(String[] args) {
@@ -18,7 +20,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        menu.start(menuStage);
+        ArcadeGame arcadeGame=new ArcadeGame(primaryStage);
+        ClassicGame classicGame=new ClassicGame(primaryStage);
+        HighScores highScores=new HighScores(primaryStage);
+
+
+        Menu menu = new Menu(primaryStage,highScores,arcadeGame,classicGame);
+
+        arcadeGame.setMenu(menu);
+        classicGame.setMenu(menu);
+        highScores.setMenu(menu);
+
+        menu.start();
     }
 
 

@@ -5,6 +5,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,17 +18,22 @@ import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 public class Menu {
 
-    Stage classicGameStage = new Stage();
-    classicGame classicGame = new classicGame();
+Stage menuStage;
+HighScores highScores;
+ArcadeGame arcadeGame;
+ClassicGame classicGame;
 
-    public Menu() {
+
+    public Menu(Stage menuStage, HighScores highScores, ArcadeGame arcadeGame, ClassicGame classicGame) {
+        this.menuStage = menuStage;
+        this.highScores = highScores;
+        this.arcadeGame = arcadeGame;
+        this.classicGame = classicGame;
     }
 
-
-    public void start(Stage menuStage)
+    public void start()
     {
 
         menuStage.setTitle("Fruit Ninja");
@@ -51,6 +58,8 @@ public class Menu {
         Path path = new Path();
         path.setStrokeWidth(2);
         path.setStroke(Color.YELLOW);
+        Effect glow = new Glow(1.0);
+        path.setEffect(glow);
 
         EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
@@ -113,8 +122,8 @@ public class Menu {
 
         Classic.setOnMouseClicked(e -> {
 
-            classicGame.start(classicGameStage);
-            menuStage.close();
+            classicGame.start();
+
 
         });
 
@@ -138,6 +147,13 @@ public class Menu {
         scaleTransition2.setCycleCount(Timeline.INDEFINITE);
         scaleTransition2.play();
 
+        Arcade.setOnMouseClicked(e -> {
+
+            arcadeGame.start();
+
+
+        });
+
         Image highScore = new Image("file:Fruit_Ninja_Materials/HS.png");
         ImageView HS = new ImageView(highScore);
         HS.setScaleX(0.4);
@@ -151,6 +167,13 @@ public class Menu {
         scaleTransition3.setAutoReverse(true);
         scaleTransition3.setCycleCount(Timeline.INDEFINITE);
         scaleTransition3.play();
+
+        HS.setOnMouseClicked(e -> {
+
+            highScores.start();
+
+
+        });
 
         Image ninjaMan = new Image("file:Fruit_Ninja_Materials/man.png");
         ImageView man = new ImageView(ninjaMan);

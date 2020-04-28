@@ -5,6 +5,8 @@ import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,9 +19,19 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class classicGame {
+public class ClassicGame {
+Stage classicGameStage;
+Menu menu;
 
-    public void start(Stage classicGameStage)
+    public ClassicGame(Stage classicGameStage) {
+        this.classicGameStage = classicGameStage;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public void start()
     {
         classicGameStage.setTitle("Fruit Ninja");
         classicGameStage.centerOnScreen();
@@ -32,17 +44,17 @@ public class classicGame {
         Image background = new Image("file:Fruit_Ninja_Materials/Background.jpg");
         ImageView bg = new ImageView(background);
 
-        Label highScore = new Label("High Score: ");
-        highScore.setLayoutX(50);
-        highScore.setLayoutY(50);
-        highScore.setFont(new Font("Arial Bold", 25));
-        highScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
+        Label classicScore = new Label("Score: ");
+        classicScore.setLayoutX(50);
+        classicScore.setLayoutY(50);
+        classicScore.setFont(new Font("Arial Bold", 25));
+        classicScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
 
-        Label highScoreValue = new Label("0");
-        highScoreValue.setLayoutX(200);
-        highScoreValue.setLayoutY(50);
-        highScoreValue.setFont(new Font("Arial Bold", 26));
-        highScoreValue.setTextFill(Color.web("#FF6347", 1)); //Tomato color
+        Label classicScoreValue = new Label("0");
+        classicScoreValue.setLayoutX(150);
+        classicScoreValue.setLayoutY(50);
+        classicScoreValue.setFont(new Font("Arial Bold", 26));
+        classicScoreValue.setTextFill(Color.web("#FF6347", 1)); //Tomato color
 
         Image heart1 = new Image("file:Fruit_Ninja_Materials/Heart.png");
         ImageView firstLive = new ImageView(heart1);
@@ -155,6 +167,8 @@ public class classicGame {
         Path path = new Path();
         path.setStrokeWidth(2);
         path.setStroke(Color.YELLOW);
+        Effect glow = new Glow(1.0);
+        path.setEffect(glow);
 
         EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
@@ -193,7 +207,7 @@ public class classicGame {
         Orange.setOnMouseEntered(e -> Orange.setImage(slicedOrange));
 
 
-        root.getChildren().addAll(bg,Apple,Watermelon,Banana,Orange,path,highScore,highScoreValue,firstLive,secondLive,thirdLive);
+        root.getChildren().addAll(bg,Apple,Watermelon,Banana,Orange,path,classicScore,classicScoreValue,firstLive,secondLive,thirdLive);
     }
 
 }
