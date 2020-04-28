@@ -4,7 +4,7 @@ public class GameObjectFactory {
 
     private static GameObjectFactory instance;
 
-    private GameObjectFactory() {
+    public GameObjectFactory() {
 
     }
 

@@ -3,7 +3,7 @@ package Model.Game;
 public class GameFactory {
     private GameFactory instance;
 
-    private GameFactory()
+    public GameFactory()
     {
 
     }

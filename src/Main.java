@@ -1,4 +1,6 @@
 
+import Control.ClassicLogic;
+import Control.Logic;
 import View.ArcadeGame;
 import View.ClassicGame;
 import View.HighScores;
@@ -19,6 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        ClassicLogic classicLogic=new ClassicLogic();
 
         ArcadeGame arcadeGame=new ArcadeGame(primaryStage);
         ClassicGame classicGame=new ClassicGame(primaryStage);
@@ -29,6 +32,7 @@ public class Main extends Application {
 
         arcadeGame.setMenu(menu);
         classicGame.setMenu(menu);
+
         highScores.setMenu(menu);
 
         menu.start();

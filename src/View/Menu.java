@@ -4,11 +4,13 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -120,12 +122,9 @@ ClassicGame classicGame;
         scaleTransition.setCycleCount(Timeline.INDEFINITE);
         scaleTransition.play();
 
-        Classic.setOnMouseClicked(e -> {
+        
+        Classic.setOnMouseMoved(e->classicGame.start());
 
-            classicGame.start();
-
-
-        });
 
         Image startArcade = new Image("file:Fruit_Ninja_Materials/Arcade.png");
         ImageView Arcade = new ImageView(startArcade);
@@ -185,5 +184,6 @@ ClassicGame classicGame;
 
         root.getChildren().addAll(bg,quit,Classic,Arcade,HS,man,path,title);
     }
+
 
 }

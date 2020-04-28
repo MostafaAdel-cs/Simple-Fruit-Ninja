@@ -4,11 +4,7 @@ import Model.GameObjects.GameObject;
 
 public interface GameActions {
 
-    public GameObject createGameObject(); //to create the object
-
-    public void updateObjectsLocation(); //to update moving objects location
-
-    public void sliceObjects();
+    public void startGame(); //to create the object
 
     public void saveGame();
 
