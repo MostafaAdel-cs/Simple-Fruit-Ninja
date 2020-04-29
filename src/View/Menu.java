@@ -101,52 +101,50 @@ ClassicGame classicGame;
         quit.setY(350);
         quit.setOnMouseClicked(e -> System.exit(0));
 
-        Image startClassic = new Image("file:Fruit_Ninja_Materials/Classic.png");
-        ImageView Classic = new ImageView(startClassic);
-        Classic.setScaleX(1.8);
-        Classic.setScaleY(1.8);
-        Classic.setX(480);
-        Classic.setY(400);
+        Image startClassic = new Image("file:Fruit_Ninja_Materials/classic.png");
+        ImageView classic = new ImageView(startClassic);
+        classic.setScaleX(1.8);
+        classic.setScaleY(1.8);
+        classic.setX(480);
+        classic.setY(400);
 
         Duration duration = Duration.millis(10000);
-        RotateTransition rotateTransition = new RotateTransition(duration, Classic);
+        RotateTransition rotateTransition = new RotateTransition(duration, classic);
         rotateTransition.setByAngle(360);
         rotateTransition.setCycleCount(Timeline.INDEFINITE);
         rotateTransition.play();
 
         Duration duration2 = Duration.millis(600);
-        ScaleTransition scaleTransition = new ScaleTransition(duration2, Classic);
+        ScaleTransition scaleTransition = new ScaleTransition(duration2, classic);
         scaleTransition.setByX(0.3);
         scaleTransition.setByY(0.3);
         scaleTransition.setAutoReverse(true);
         scaleTransition.setCycleCount(Timeline.INDEFINITE);
         scaleTransition.play();
 
-        
-        Classic.setOnMouseMoved(e->classicGame.start());
+        classic.setOnMouseClicked(e->classicGame.start());
 
-
-        Image startArcade = new Image("file:Fruit_Ninja_Materials/Arcade.png");
-        ImageView Arcade = new ImageView(startArcade);
-        Arcade.setScaleX(1.8);
-        Arcade.setScaleY(1.8);
-        Arcade.setX(250);
-        Arcade.setY(400);
+        Image startArcade = new Image("file:Fruit_Ninja_Materials/arcade.png");
+        ImageView arcade = new ImageView(startArcade);
+        arcade.setScaleX(1.8);
+        arcade.setScaleY(1.8);
+        arcade.setX(250);
+        arcade.setY(400);
         Duration duration3 = Duration.millis(10000);
-        RotateTransition rotateTransition2 = new RotateTransition(duration3, Arcade);
+        RotateTransition rotateTransition2 = new RotateTransition(duration3, arcade);
         rotateTransition2.setByAngle(360);
         rotateTransition2.setCycleCount(Timeline.INDEFINITE);
         rotateTransition2.play();
 
         Duration duration4 = Duration.millis(600);
-        ScaleTransition scaleTransition2 = new ScaleTransition(duration4, Arcade);
+        ScaleTransition scaleTransition2 = new ScaleTransition(duration4, arcade);
         scaleTransition2.setByX(0.3);
         scaleTransition2.setByY(0.3);
         scaleTransition2.setAutoReverse(true);
         scaleTransition2.setCycleCount(Timeline.INDEFINITE);
         scaleTransition2.play();
 
-        Arcade.setOnMouseClicked(e -> {
+        arcade.setOnMouseClicked(e -> {
 
             arcadeGame.start();
 
@@ -182,8 +180,10 @@ ClassicGame classicGame;
         man.setY(100);
 
 
-        root.getChildren().addAll(bg,quit,Classic,Arcade,HS,man,path,title);
+        root.getChildren().addAll(bg,quit,classic,arcade,HS,man,path,title);
     }
+
+
 
 
 }

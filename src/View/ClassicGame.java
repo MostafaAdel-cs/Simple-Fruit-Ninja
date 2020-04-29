@@ -1,5 +1,6 @@
 package View;
 
+import Model.GameObjects.Apple;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -19,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClassicGame {
@@ -138,37 +140,54 @@ Menu menu;
         root.getChildren().addAll(bg);
         createObject(root);
         root.getChildren().addAll(path,classicScore,classicScoreValue,firstLive,secondLive,thirdLive);
+
     }
 
 
     private void createObject(Pane root) {
-        Image greenApple = new Image("file:Fruit_Ninja_Materials/Fruits/Green_Apple.png");      //read pic
-        Image slicedGreenApple = new Image("file:Fruit_Ninja_Materials/Fruits/SlicedGreenApple.png");
-        ImageView Apple = new ImageView(greenApple);        //view pic
-        Apple.setScaleX(2.8);           //size
-        Apple.setScaleY(2.8);           //size
-        Apple.setX(200);                //start position
-        Apple.setY(750);                //start position
-        Duration duration = Duration.millis(700);   //time fruit goes up and down =======adjust here
-        TranslateTransition transition = new TranslateTransition(duration,Apple);
-        transition.setByX(0);       //
-        transition.setByY(-700);    //max height ============adjust here
 
-
-        // mtl3b4 hna
-        duration = Duration.millis(10000);
-        RotateTransition rotateTransition = new RotateTransition(duration, Apple);
-        rotateTransition.setByAngle(500);
-        rotateTransition.play();
-        transition.setAutoReverse(true);
-        transition.setRate(0.5);
-        transition.setCycleCount(2);
-        transition.play();
+        Random random=new Random();
+       for(int i=0;i<6;i++)  {
+            Image greenApple = new Image("file:Fruit_Ninja_Materials/Fruits/Green_Apple.png");      //read pic
+            Image slicedGreenApple = new Image("file:Fruit_Ninja_Materials/Fruits/SlicedGreenApple.png");
+            ImageView Apple = new ImageView(greenApple);        //view pic
+            Apple.setScaleX(2.8);           //size
+            Apple.setScaleY(2.8);           //size
 
 
 
-        root.getChildren().add(Apple);
+            Apple.setX(random.nextInt(1000));                //start position =======adjust
 
+
+
+            Apple.setY(750);                //start position
+           int randomHeight;
+            randomHeight=random.nextInt(700)+300;
+            Duration duration = Duration.millis(randomHeight);   //time fruit goes up and down =======adjust here
+            TranslateTransition transition = new TranslateTransition(duration, Apple);
+            transition.setByX(0);//
+
+
+
+           int randomY=-700;
+
+            transition.setByY(randomY);    //max height ============adjust here
+           randomY=-700+300;
+
+            // mtl3b4 hna
+            duration = Duration.millis(10000);
+            RotateTransition rotateTransition = new RotateTransition(duration, Apple);
+            rotateTransition.setByAngle(500);
+            rotateTransition.play();
+            transition.setAutoReverse(true);
+            transition.setRate(0.5);
+            transition.setCycleCount(2);
+            transition.play();
+
+            Apple.setOnMouseMoved(e -> Apple.setImage(slicedGreenApple));
+
+            root.getChildren().add(Apple);
+        }
     }
 
 }
