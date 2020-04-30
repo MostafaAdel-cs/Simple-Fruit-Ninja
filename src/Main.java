@@ -1,10 +1,5 @@
 
-import Control.ClassicLogic;
-import Control.Logic;
-import View.ArcadeGame;
-import View.ClassicGame;
-import View.HighScores;
-import View.Menu;
+import View.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -21,11 +16,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ClassicLogic classicLogic=new ClassicLogic();
 
-        ArcadeGame arcadeGame=new ArcadeGame(primaryStage);
-        ClassicGame classicGame=new ClassicGame(primaryStage);
-        HighScores highScores=new HighScores(primaryStage);
+
+
+
+        ArcadeGameGui arcadeGame=new ArcadeGameGui(primaryStage);
+        ClassicGameGui classicGame=new ClassicGameGui(primaryStage);
+        HighScoresGui highScores=new HighScoresGui(primaryStage);
 
 
         Menu menu = new Menu(primaryStage,highScores,arcadeGame,classicGame);

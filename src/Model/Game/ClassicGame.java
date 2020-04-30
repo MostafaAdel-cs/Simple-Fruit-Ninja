@@ -1,25 +1,63 @@
 package Model.Game;
 
 import Model.GameObjects.GameObject;
+import Model.GameObjects.GameObjectFactory;
 
 import java.util.Random;
 
 public class ClassicGame implements GameActions{
+
+
+    private static ClassicGame instance;
+    private ClassicGame() {
+
+    }
+
+    public static ClassicGame getClassicGame()
+    {
+        if(instance==null)
+            instance=new ClassicGame();
+        return instance;
+    }
+
+
+    private Random random=new Random();
     private int lives;
     private int level;
-    private int numberOfFruits;
-    private boolean flag;
+    private int numberOfFruitsInLevel;  //number of fruits  level
+    private int score;
+
 
 
 
     @Override
     public void startGame() {
-   lives=3;
-   level=1;
-   flag=false;
 
+        this.lives=3;
+        this.level=1;
+        this.numberOfFruitsInLevel=random.nextInt(40)+40;   //the minimum number of fruits in first level is 40 and max is 80
+        this.score=0;
     }
 
+
+    public int getNumberInWave()
+    {
+
+        int numberOfFruitsInWave;
+        Random random=new Random();
+        numberOfFruitsInWave=random.nextInt((level+3))+1;
+
+
+        if(numberOfFruitsInWave>this.numberOfFruitsInLevel)
+        {
+
+            numberOfFruitsInWave=this.numberOfFruitsInLevel;
+        }
+
+        this.numberOfFruitsInLevel-=numberOfFruitsInWave;
+
+        return numberOfFruitsInWave;
+    }
 
     @Override
     public void saveGame() {
@@ -36,20 +74,13 @@ public class ClassicGame implements GameActions{
     startGame();
     }
 
-    public int getNumberOfFruits()
-    {
-        Random r=new Random();
-        if(!flag) {
-            numberOfFruits = r.nextInt(level * 20) + level * 5;
-            flag=true;
-        }
-        return numberOfFruits;
-    }
+
+
     public void levelUp()
     {
+
         level++;
-        flag=false;
-        getNumberOfFruits();
+        numberOfFruitsInLevel=random.nextInt(40)+40*level;
     }
 
     public void minusLives(int lives)
@@ -63,6 +94,14 @@ public class ClassicGame implements GameActions{
 
     public int getLevel() {
         return level;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
     }
 
 }

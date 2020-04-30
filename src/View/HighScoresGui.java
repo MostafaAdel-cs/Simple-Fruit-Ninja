@@ -9,12 +9,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class HighScores {
+public class HighScoresGui {
 
+    ImageGetter imageGetter=ImageGetter.createImageGetter();
     Stage highScoresStage;
     Menu menu;
 
-    public HighScores(Stage highScoresStage ) {
+    public HighScoresGui(Stage highScoresStage ) {
         this.highScoresStage = highScoresStage;
     }
 
@@ -32,8 +33,8 @@ public class HighScores {
         highScoresStage.setScene(scene);
         highScoresStage.show();
 
-        Image background = new Image("file:Fruit_Ninja_Materials/Background.jpg");
-        ImageView bg = new ImageView(background);
+
+        ImageView bg = new ImageView(imageGetter.getBackground().getImage());
 
         Label classicHighScore = new Label("Classic Mode High Score: ");
         classicHighScore.setLayoutX(180);
@@ -59,15 +60,14 @@ public class HighScores {
         arcadeScoreValue.setFont(new Font("Arial Bold", 32));
         arcadeScoreValue.setTextFill(Color.web("#00FFFF", 1)); //Aqua color
 
-        Image home = new Image("file:Fruit_Ninja_Materials/back.png");
-        ImageView menu = new ImageView(home);
+
+        ImageView menu = new ImageView(imageGetter.getBack().getImage());
         menu.setScaleX(0.21);
         menu.setScaleY(0.21);
         menu.setX(-100);
         menu.setY(350);
         menu.setRotate(180);
         menu.setOnMouseClicked(e -> {
-
 
             this.menu.start();
 

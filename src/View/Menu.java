@@ -1,16 +1,14 @@
 package View;
 
+import Control.ClassicLogic;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,16 +21,18 @@ import javafx.util.Duration;
 public class Menu {
 
 Stage menuStage;
-HighScores highScores;
-ArcadeGame arcadeGame;
-ClassicGame classicGame;
+HighScoresGui highScores;
+ArcadeGameGui arcadeGame;
+ClassicGameGui classicGameGui;
+ImageGetter logic= ImageGetter.createImageGetter();
+ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 
 
-    public Menu(Stage menuStage, HighScores highScores, ArcadeGame arcadeGame, ClassicGame classicGame) {
+    public Menu(Stage menuStage, HighScoresGui highScores, ArcadeGameGui arcadeGame, ClassicGameGui classicGame) {
         this.menuStage = menuStage;
         this.highScores = highScores;
         this.arcadeGame = arcadeGame;
-        this.classicGame = classicGame;
+        this.classicGameGui = classicGame;
     }
 
     public void start()
@@ -47,11 +47,11 @@ ClassicGame classicGame;
         menuStage.show();
 
 
-        Image background = new Image("file:Fruit_Ninja_Materials/Background.jpg");
-        ImageView bg = new ImageView(background);
 
-        Image logo = new Image("file:Fruit_Ninja_Materials/logo.png");
-        ImageView title = new ImageView(logo);
+        ImageView bg = new ImageView(logic.getBackground().getImage());
+
+
+        ImageView title = new ImageView(logic.getLogo().getImage());
         title.setScaleX(0.4);
         title.setScaleY(0.4);
         title.setX(-300);
@@ -93,16 +93,16 @@ ClassicGame classicGame;
         scene.setOnMouseReleased(mouseHandler);
 
 
-        Image exit = new Image("file:Fruit_Ninja_Materials/exit.png");
-        ImageView quit = new ImageView(exit);
+
+        ImageView quit = new ImageView(logic.getExit().getImage());
         quit.setScaleX(0.21);
         quit.setScaleY(0.21);
         quit.setX(250);
         quit.setY(350);
         quit.setOnMouseClicked(e -> System.exit(0));
 
-        Image startClassic = new Image("file:Fruit_Ninja_Materials/classic.png");
-        ImageView classic = new ImageView(startClassic);
+
+        ImageView classic = new ImageView(logic.getStartClassic().getImage());
         classic.setScaleX(1.8);
         classic.setScaleY(1.8);
         classic.setX(480);
@@ -122,10 +122,14 @@ ClassicGame classicGame;
         scaleTransition.setCycleCount(Timeline.INDEFINITE);
         scaleTransition.play();
 
-        classic.setOnMouseClicked(e->classicGame.start());
+        classic.setOnMouseClicked(e->{
+            classicLogic.startGame();
+            classicGameGui.start();
 
-        Image startArcade = new Image("file:Fruit_Ninja_Materials/arcade.png");
-        ImageView arcade = new ImageView(startArcade);
+        });
+
+
+        ImageView arcade = new ImageView(logic.getStartArcade().getImage());
         arcade.setScaleX(1.8);
         arcade.setScaleY(1.8);
         arcade.setX(250);
@@ -151,8 +155,8 @@ ClassicGame classicGame;
 
         });
 
-        Image highScore = new Image("file:Fruit_Ninja_Materials/HS.png");
-        ImageView HS = new ImageView(highScore);
+
+        ImageView HS = new ImageView(logic.getHighScore().getImage());
         HS.setScaleX(0.4);
         HS.setScaleY(0.4);
         HS.setX(580);
@@ -172,8 +176,8 @@ ClassicGame classicGame;
 
         });
 
-        Image ninjaMan = new Image("file:Fruit_Ninja_Materials/man.png");
-        ImageView man = new ImageView(ninjaMan);
+
+        ImageView man = new ImageView(logic.getNinjaMan().getImage());
         man.setScaleX(0.25);
         man.setScaleY(0.25);
         man.setX(-150);

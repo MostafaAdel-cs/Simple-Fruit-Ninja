@@ -4,7 +4,7 @@ import Model.GameObjects.GameObject;
 
 public class ArcadeGame implements GameActions {
     private int time;
-
+    private int score;
     @Override
     public void startGame() {
 

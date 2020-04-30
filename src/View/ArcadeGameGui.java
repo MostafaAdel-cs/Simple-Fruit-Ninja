@@ -22,13 +22,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ArcadeGame {
+public class ArcadeGameGui {
 
 
     Stage arcadeGameStage;
     Menu menu;
 
-    public ArcadeGame(Stage arcadeGameStage) {
+    public ArcadeGameGui(Stage arcadeGameStage) {
         this.arcadeGameStage = arcadeGameStage;
     }
 

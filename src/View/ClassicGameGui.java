@@ -1,6 +1,8 @@
 package View;
 
-import Model.GameObjects.Apple;
+import Control.ClassicLogic;
+import Model.Game.ClassicGame;
+import Model.GameObjects.GameObject;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -20,19 +22,22 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ClassicGame {
-Stage classicGameStage;
-Menu menu;
-
-
-
+public class ClassicGameGui {
+private Stage classicGameStage;
+private Menu menu;
+private ImageGetter imageGetter=ImageGetter.createImageGetter();
+private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 
 
 
-    public ClassicGame(Stage classicGameStage) {
+
+
+
+    public ClassicGameGui(Stage classicGameStage) {
         this.classicGameStage = classicGameStage;
     }
 
@@ -51,8 +56,8 @@ Menu menu;
         classicGameStage.setScene(scene);
         classicGameStage.show();
 
-        Image background = new Image("file:Fruit_Ninja_Materials/Background.jpg");
-        ImageView bg = new ImageView(background);
+
+        ImageView bg = new ImageView(imageGetter.getBackground().getImage());
 
         Label classicScore = new Label("Score: ");
         classicScore.setLayoutX(50);
@@ -66,38 +71,27 @@ Menu menu;
         classicScoreValue.setFont(new Font("Arial Bold", 26));
         classicScoreValue.setTextFill(Color.web("#FF6347", 1)); //Tomato color
 
-        Image heart1 = new Image("file:Fruit_Ninja_Materials/Heart.png");
-        ImageView firstLive = new ImageView(heart1);
+
+
+        ImageView firstLive = new ImageView(imageGetter.getHeart().getImage());
         firstLive.setScaleX(0.22);
         firstLive.setScaleY(0.22);
         firstLive.setX(650);
         firstLive.setY(-70);
 
-        Image heart2 = new Image("file:Fruit_Ninja_Materials/Heart.png");
-        ImageView secondLive = new ImageView(heart2);
+
+        ImageView secondLive = new ImageView(imageGetter.getHeart().getImage());
         secondLive.setScaleX(0.22);
         secondLive.setScaleY(0.22);
         secondLive.setX(700);
         secondLive.setY(-70);
 
-        Image heart3 = new Image("file:Fruit_Ninja_Materials/Heart.png");
-        ImageView thirdLive = new ImageView(heart3);
+
+        ImageView thirdLive = new ImageView(imageGetter.getHeart().getImage());
         thirdLive.setScaleX(0.22);
         thirdLive.setScaleY(0.22);
         thirdLive.setX(750);
         thirdLive.setY(-70);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -138,56 +132,112 @@ Menu menu;
         scene.setOnMouseReleased(mouseHandler);
 
         root.getChildren().addAll(bg);
-        createObject(root);
+        createObject(root,firstLive,secondLive,thirdLive);
         root.getChildren().addAll(path,classicScore,classicScoreValue,firstLive,secondLive,thirdLive);
+
 
     }
 
 
-    private void createObject(Pane root) {
-
-        Random random=new Random();
-       for(int i=0;i<6;i++)  {
-            Image greenApple = new Image("file:Fruit_Ninja_Materials/Fruits/Green_Apple.png");      //read pic
-            Image slicedGreenApple = new Image("file:Fruit_Ninja_Materials/Fruits/SlicedGreenApple.png");
-            ImageView Apple = new ImageView(greenApple);        //view pic
-            Apple.setScaleX(2.8);           //size
-            Apple.setScaleY(2.8);           //size
 
 
+    private void createObject(Pane root,ImageView firstHeart,ImageView secondHeart,ImageView thirdHeart) {
 
-            Apple.setX(random.nextInt(1000));                //start position =======adjust
+        Random random = new Random();
+
+        List<GameObject> gameObjectList=new ArrayList();
+        int numberOfFruits=classicLogic.getNumberOfFruitsInWave();
+        for (int i=0;i<numberOfFruits;i++) {
 
 
+            gameObjectList.add(classicLogic.getRandomFruit());
 
-            Apple.setY(750);                //start position
-           int randomHeight;
-            randomHeight=random.nextInt(700)+300;
-            Duration duration = Duration.millis(randomHeight);   //time fruit goes up and down =======adjust here
-            TranslateTransition transition = new TranslateTransition(duration, Apple);
+            ImageView object = new ImageView(gameObjectList.get(i).getUnCutBufferedImageImages().getImage());        //view pic
+            object.setScaleX(2.8);           //size
+            object.setScaleY(2.8);           //size
+
+
+            object.setX(random.nextInt(1000));                //start position =======adjust
+
+            object.setY(750);                //start position
+
+
+            Duration duration = Duration.millis(2000);   //time fruit goes up and down =======adjust here
+
+
+            TranslateTransition transition = new TranslateTransition(duration, object);
             transition.setByX(0);//
 
 
+            transition.setByY(random.nextInt(700) - 1000);    //max height ============adjust here
 
-           int randomY=-700;
-
-            transition.setByY(randomY);    //max height ============adjust here
-           randomY=-700+300;
 
             // mtl3b4 hna
             duration = Duration.millis(10000);
-            RotateTransition rotateTransition = new RotateTransition(duration, Apple);
+            RotateTransition rotateTransition = new RotateTransition(duration, object);
             rotateTransition.setByAngle(500);
             rotateTransition.play();
             transition.setAutoReverse(true);
             transition.setRate(0.5);
             transition.setCycleCount(2);
+
+            //to know when the object falls down is it cut or not
+            transition.setOnFinished(e -> {
+
+            });
+
+
             transition.play();
+            final boolean[] l = {false};
+            int finalI = i;
+            object.setOnMouseMoved(e -> {
 
-            Apple.setOnMouseMoved(e -> Apple.setImage(slicedGreenApple));
+                object.setImage(gameObjectList.get(finalI).getCutBufferedImageImages().getImage());
 
-            root.getChildren().add(Apple);
+                if(!l[0]) {
+                    classicLogic.addScore();
+                }
+                l[0] =true;
+
+            });
+
+
+            transition.setOnFinished(e->
+            {
+                if(object.getImage()==gameObjectList.get(finalI).getUnCutBufferedImageImages().getImage())
+                {
+                    classicLogic.removeLive();
+                    adjustHearts(firstHeart,secondHeart,thirdHeart);
+                }
+            });
+
+            root.getChildren().add(object);
+
+
         }
+
+
     }
+
+    private void adjustHearts(ImageView firstHeart,ImageView secondHeart,ImageView thirdHeart)
+    {
+        if(classicLogic.getLives()==1)
+        {
+            secondHeart.setVisible(false);
+            thirdHeart.setVisible(false);
+        }
+        else if(classicLogic.getLives()==2)
+        {
+            thirdHeart.setVisible(false);
+        }
+
+
+
+    }
+    private void editScoreLabel()
+    {
+
+    }
+
 
 }
