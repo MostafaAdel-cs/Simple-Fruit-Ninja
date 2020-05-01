@@ -1,7 +1,6 @@
 package View;
 
 import Control.ClassicLogic;
-import Model.Game.ClassicGame;
 import Model.GameObjects.GameObject;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -10,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -25,6 +23,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassicGameGui {
 private Stage classicGameStage;
@@ -65,11 +64,27 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         classicScore.setFont(new Font("Arial Bold", 25));
         classicScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
 
+
+
         Label classicScoreValue = new Label("0");
         classicScoreValue.setLayoutX(150);
         classicScoreValue.setLayoutY(50);
         classicScoreValue.setFont(new Font("Arial Bold", 26));
         classicScoreValue.setTextFill(Color.web("#FF6347", 1)); //Tomato color
+
+
+        Label classicLevel = new Label("Level: ");
+        classicLevel.setLayoutX(50);
+        classicLevel.setLayoutY(100);
+        classicLevel.setFont(new Font("Arial Bold", 25));
+        classicLevel.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
+
+        Label classicLevelValue = new Label("0");
+        classicLevelValue.setLayoutX(150);
+        classicLevelValue.setLayoutY(100);
+        classicLevelValue.setFont(new Font("Arial Bold", 26));
+        classicLevelValue.setTextFill(Color.web("#FF6347", 1)); //Tomato color
+
 
 
 
@@ -132,8 +147,14 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         scene.setOnMouseReleased(mouseHandler);
 
         root.getChildren().addAll(bg);
-        createObject(root,firstLive,secondLive,thirdLive);
-        root.getChildren().addAll(path,classicScore,classicScoreValue,firstLive,secondLive,thirdLive);
+
+
+        root.getChildren().addAll(path,classicScore,classicLevel,classicLevelValue,classicScoreValue,firstLive,secondLive,thirdLive);
+
+        int numberOfFruits=classicLogic.getNumberOfFruitsInWave();
+
+
+         throwObjectsInWaves(root, firstLive, secondLive, thirdLive, classicScoreValue, numberOfFruits,classicLevelValue);
 
 
     }
@@ -141,35 +162,46 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 
 
 
-    private void createObject(Pane root,ImageView firstHeart,ImageView secondHeart,ImageView thirdHeart) {
+    private void throwObjectsInWaves(Pane root, ImageView firstHeart, ImageView secondHeart, ImageView thirdHeart, Label classicScoreValue, int numberOfFruits,Label classicLevelValue)
+    {
+        classicLevelValue.setText(""+classicLogic.getLevel());
 
-        Random random = new Random();
+        AtomicInteger count= new AtomicInteger();
+
 
         List<GameObject> gameObjectList=new ArrayList();
-        int numberOfFruits=classicLogic.getNumberOfFruitsInWave();
+        List<TranslateTransition> translateTransitions=new ArrayList();
+
+        Random r=new Random();
         for (int i=0;i<numberOfFruits;i++) {
+            System.out.println(numberOfFruits);
+            int finalI = i;
 
+            if(r.nextInt(2)==0) {
+                gameObjectList.add(classicLogic.getRandomFruit(true));
 
-            gameObjectList.add(classicLogic.getRandomFruit());
+            }
+            else
+            gameObjectList.add(classicLogic.getRandomFruit(false));
 
             ImageView object = new ImageView(gameObjectList.get(i).getUnCutBufferedImageImages().getImage());        //view pic
             object.setScaleX(2.8);           //size
             object.setScaleY(2.8);           //size
 
 
-            object.setX(random.nextInt(1000));                //start position =======adjust
+            object.setX(gameObjectList.get(finalI).getXLocation());                //start position =======adjust
 
             object.setY(750);                //start position
 
 
-            Duration duration = Duration.millis(2000);   //time fruit goes up and down =======adjust here
+            Duration duration = Duration.millis(gameObjectList.get(finalI).getTime());   //time fruit goes up and down =======adjust here
 
 
-            TranslateTransition transition = new TranslateTransition(duration, object);
-            transition.setByX(0);//
+            translateTransitions.add(new TranslateTransition(duration, object));
+            translateTransitions.get(finalI).setByX(0);//
 
 
-            transition.setByY(random.nextInt(700) - 1000);    //max height ============adjust here
+            translateTransitions.get(finalI).setByY(-gameObjectList.get(finalI).getMaxHeight());    //max height ============adjust here
 
 
             // mtl3b4 hna
@@ -177,67 +209,98 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
             RotateTransition rotateTransition = new RotateTransition(duration, object);
             rotateTransition.setByAngle(500);
             rotateTransition.play();
-            transition.setAutoReverse(true);
-            transition.setRate(0.5);
-            transition.setCycleCount(2);
+            translateTransitions.get(finalI).setAutoReverse(true);
+            translateTransitions.get(finalI).setRate(0.5);
+            translateTransitions.get(finalI).setCycleCount(2);
 
             //to know when the object falls down is it cut or not
-            transition.setOnFinished(e -> {
-
-            });
 
 
-            transition.play();
+
+            translateTransitions.get(finalI).play();
             final boolean[] l = {false};
-            int finalI = i;
+
             object.setOnMouseMoved(e -> {
 
                 object.setImage(gameObjectList.get(finalI).getCutBufferedImageImages().getImage());
 
                 if(!l[0]) {
                     classicLogic.addScore();
+                    classicLogic.fruitSliced();
+                    classicScoreValue.setText(""+classicLogic.getScore());
+
                 }
                 l[0] =true;
 
             });
 
+            root.getChildren().add(object);
 
-            transition.setOnFinished(e->
+            translateTransitions.get(finalI).setOnFinished(e->
             {
+                boolean b=false;
                 if(object.getImage()==gameObjectList.get(finalI).getUnCutBufferedImageImages().getImage())
                 {
+                    if(gameObjectList.get(finalI).getCutBufferedImageImages().getName()=="Bomb")
+                        System.out.println("Bomb");
                     classicLogic.removeLive();
-                    adjustHearts(firstHeart,secondHeart,thirdHeart);
+                    b=adjustHearts(firstHeart,secondHeart,thirdHeart);
+
                 }
+
+                count.getAndIncrement();
+
+
+
+
+                if(count.get()==numberOfFruits)
+                {
+                    if(!b)
+                    {
+                   throwObjectsInWaves(root,firstHeart,secondHeart,thirdHeart,classicScoreValue,classicLogic.getNumberOfFruitsInWave(),classicLevelValue);
+                    }
+
+
+
+
+                }
+
             });
 
-            root.getChildren().add(object);
 
 
         }
 
 
+
     }
 
-    private void adjustHearts(ImageView firstHeart,ImageView secondHeart,ImageView thirdHeart)
+
+
+    private boolean adjustHearts(ImageView firstHeart, ImageView secondHeart, ImageView thirdHeart)
     {
         if(classicLogic.getLives()==1)
         {
             secondHeart.setVisible(false);
-            thirdHeart.setVisible(false);
+
         }
         else if(classicLogic.getLives()==2)
         {
             thirdHeart.setVisible(false);
         }
+        else if(classicLogic.getLives()==0)
+        {
+            firstHeart.setVisible(false);
+            System.out.println("gameover");
+            classicLogic.resetGame();
+            menu.start();
+            return true;
+        }
 
 
-
+        return false;
     }
-    private void editScoreLabel()
-    {
 
-    }
 
 
 }

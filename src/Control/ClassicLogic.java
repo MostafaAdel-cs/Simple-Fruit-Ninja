@@ -26,6 +26,10 @@ public class ClassicLogic {
 
     ClassicGame game=ClassicGame.getClassicGame();
 
+    public void resetGame()
+    {
+        game.resetGame();
+    }
 
     public void startGame()
     {
@@ -52,9 +56,9 @@ public class ClassicLogic {
     {
         return game.getScore();
     }
-    public GameObject getRandomFruit()
+    public GameObject getRandomFruit(Boolean getBomb)
     {
-     return gameObjectFactory.createRandomFruit();
+     return gameObjectFactory.createRandomFruit(game.getLevel(),getBomb);
     }
 
     public void removeLive()
@@ -63,4 +67,11 @@ public class ClassicLogic {
     }
 
 
+    public int getLevel() {
+        return game.getLevel();
+    }
+    public void fruitSliced()
+    {
+        game.decrementNumberOfFruits();
+    }
 }

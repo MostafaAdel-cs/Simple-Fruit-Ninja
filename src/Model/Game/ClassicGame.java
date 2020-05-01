@@ -50,8 +50,8 @@ public class ClassicGame implements GameActions{
 
         if(numberOfFruitsInWave>this.numberOfFruitsInLevel)
         {
-
             numberOfFruitsInWave=this.numberOfFruitsInLevel;
+            levelUp();
         }
 
         this.numberOfFruitsInLevel-=numberOfFruitsInWave;
@@ -102,6 +102,13 @@ public class ClassicGame implements GameActions{
 
     public void addScore(int score) {
         this.score += score;
+    }
+
+    public void decrementNumberOfFruits()
+    {
+        numberOfFruitsInLevel--;
+        if(numberOfFruitsInLevel==0)
+            levelUp();
     }
 
 }
