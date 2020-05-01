@@ -19,18 +19,19 @@ public class Main extends Application {
 
 
 
-
+        ClassicGameOverGui classicGameOverGui=new ClassicGameOverGui(primaryStage);
         ArcadeGameGui arcadeGame=new ArcadeGameGui(primaryStage);
         ClassicGameGui classicGame=new ClassicGameGui(primaryStage);
         HighScoresGui highScores=new HighScoresGui(primaryStage);
-
+        ArcadeGameOverGui arcadeGameOverGui=new ArcadeGameOverGui(primaryStage);
 
         Menu menu = new Menu(primaryStage,highScores,arcadeGame,classicGame);
-
-        arcadeGame.setMenu(menu);
+        classicGameOverGui.setMenu(menu);
+        arcadeGame.setArcadeGameOverGui(arcadeGameOverGui);
         classicGame.setMenu(menu);
-
+        classicGame.setClassicGameOverGui(classicGameOverGui);
         highScores.setMenu(menu);
+        arcadeGameOverGui.setMenu(menu);
 
         menu.start();
     }

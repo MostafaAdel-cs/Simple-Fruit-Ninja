@@ -23,7 +23,10 @@ public class ClassicLogic {
     }
 
 
-
+public void allLivesLost()
+{
+    game.allLivesLost();
+}
     ClassicGame game=ClassicGame.getClassicGame();
 
     public void resetGame()

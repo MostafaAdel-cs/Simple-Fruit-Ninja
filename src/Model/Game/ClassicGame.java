@@ -85,7 +85,12 @@ public class ClassicGame implements GameActions{
 
     public void minusLives(int lives)
     {
+        if(lives!=0)
         this.lives-=lives;
+    }
+    public void allLivesLost()
+    {
+        this.lives=0;
     }
 
     public int getLives() {

@@ -43,6 +43,9 @@ public abstract class GameObject {
     }
 
 
+    public String getName() {
+        return name;
+    }
 
     public BufferedImage getCutBufferedImageImages()
     {

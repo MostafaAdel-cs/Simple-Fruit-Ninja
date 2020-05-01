@@ -23,30 +23,36 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassicGameGui {
-private Stage classicGameStage;
+private Stage classicGameStage=new Stage();
+private Stage mainStage;
 private Menu menu;
 private ImageGetter imageGetter=ImageGetter.createImageGetter();
 private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
+private ClassicGameOverGui classicGameOverGui;
 
 
 
 
 
-
-    public ClassicGameGui(Stage classicGameStage) {
-        this.classicGameStage = classicGameStage;
+    public ClassicGameGui(Stage mainStage) {
+        this.mainStage = classicGameStage;
     }
 
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
 
+    public void setClassicGameOverGui(ClassicGameOverGui classicGameOverGui) {
+        this.classicGameOverGui = classicGameOverGui;
+    }
+
     public void start()
     {
-
+        mainStage.hide();
         classicGameStage.setTitle("Fruit Ninja");
         classicGameStage.centerOnScreen();
         classicGameStage.setResizable(false);
@@ -173,111 +179,117 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         List<TranslateTransition> translateTransitions=new ArrayList();
 
         Random r=new Random();
-        for (int i=0;i<numberOfFruits;i++) {
-            System.out.println(numberOfFruits);
-            int finalI = i;
-
-            if(r.nextInt(2)==0) {
-                gameObjectList.add(classicLogic.getRandomFruit(true));
-
-            }
-            else
-            gameObjectList.add(classicLogic.getRandomFruit(false));
-
-            ImageView object = new ImageView(gameObjectList.get(i).getUnCutBufferedImageImages().getImage());        //view pic
-            object.setScaleX(2.8);           //size
-            object.setScaleY(2.8);           //size
+        if (classicGameStage.isShowing())
+            for (int i = 0; i < numberOfFruits; i++) {
 
 
-            object.setX(gameObjectList.get(finalI).getXLocation());                //start position =======adjust
+                System.out.println(numberOfFruits);
+                int finalI = i;
 
-            object.setY(750);                //start position
+                if (r.nextInt(2) == 0) {
+                    gameObjectList.add(classicLogic.getRandomFruit(true));
 
+                } else
+                    gameObjectList.add(classicLogic.getRandomFruit(false));
 
-            Duration duration = Duration.millis(gameObjectList.get(finalI).getTime());   //time fruit goes up and down =======adjust here
+                ImageView object = new ImageView(gameObjectList.get(i).getUnCutBufferedImageImages().getImage());        //view pic
+                object.setScaleX(2.8);           //size
+                object.setScaleY(2.8);           //size
 
-
-            translateTransitions.add(new TranslateTransition(duration, object));
-            translateTransitions.get(finalI).setByX(0);//
-
-
-            translateTransitions.get(finalI).setByY(-gameObjectList.get(finalI).getMaxHeight());    //max height ============adjust here
-
-
-            // mtl3b4 hna
-            duration = Duration.millis(10000);
-            RotateTransition rotateTransition = new RotateTransition(duration, object);
-            rotateTransition.setByAngle(500);
-            rotateTransition.play();
-            translateTransitions.get(finalI).setAutoReverse(true);
-            translateTransitions.get(finalI).setRate(0.5);
-            translateTransitions.get(finalI).setCycleCount(2);
-
-            //to know when the object falls down is it cut or not
-
-
-
-            translateTransitions.get(finalI).play();
-            final boolean[] l = {false};
-
-            object.setOnMouseMoved(e -> {
-
-                object.setImage(gameObjectList.get(finalI).getCutBufferedImageImages().getImage());
-
-                if(!l[0]) {
-                    classicLogic.addScore();
-                    classicLogic.fruitSliced();
-                    classicScoreValue.setText(""+classicLogic.getScore());
-
-                }
-                l[0] =true;
-
-            });
-
-            root.getChildren().add(object);
-
-            translateTransitions.get(finalI).setOnFinished(e->
-            {
-                boolean b=false;
-                if(object.getImage()==gameObjectList.get(finalI).getUnCutBufferedImageImages().getImage())
-                {
-                    if(gameObjectList.get(finalI).getCutBufferedImageImages().getName()=="Bomb")
-                        System.out.println("Bomb");
-                    classicLogic.removeLive();
-                    b=adjustHearts(firstHeart,secondHeart,thirdHeart);
-
+                if (gameObjectList.get(finalI).getName().contains("Bomb")) {
+                    object.setScaleX(1.4);
+                    object.setScaleY(1.4);
                 }
 
-                count.getAndIncrement();
+
+                object.setX(gameObjectList.get(finalI).getXLocation());                //start position =======adjust
+
+                object.setY(750);                //start position
 
 
+                Duration duration = Duration.millis(gameObjectList.get(finalI).getTime());   //time fruit goes up and down =======adjust here
 
 
-                if(count.get()==numberOfFruits)
+                translateTransitions.add(new TranslateTransition(duration, object));
+                translateTransitions.get(finalI).setByX(0);//
+
+
+                translateTransitions.get(finalI).setByY(-gameObjectList.get(finalI).getMaxHeight());    //max height ============adjust here
+
+
+                // mtl3b4 hna
+                duration = Duration.millis(10000);
+                RotateTransition rotateTransition = new RotateTransition(duration, object);
+                rotateTransition.setByAngle(500);
+                rotateTransition.play();
+                translateTransitions.get(finalI).setAutoReverse(true);
+                translateTransitions.get(finalI).setRate(0.5);
+                translateTransitions.get(finalI).setCycleCount(2);
+
+                //to know when the object falls down is it cut or not
+
+
+                translateTransitions.get(finalI).play();
+                final boolean[] l = {false};
+
+                object.setOnMouseMoved(e -> {
+
+                    object.setImage(gameObjectList.get(finalI).getCutBufferedImageImages().getImage());
+
+                    if (!l[0]) {
+                        if (gameObjectList.get(finalI).getName().contentEquals("Bomb")) {
+
+                            classicLogic.removeLive();
+                            adjustHearts(firstHeart, secondHeart, thirdHeart);
+
+                        } else if (gameObjectList.get(finalI).getName().contentEquals("SpecialBomb")) {
+                            classicLogic.allLivesLost();
+                            adjustHearts(firstHeart, secondHeart, thirdHeart);
+                        } else {
+                            classicLogic.addScore();
+                            classicLogic.fruitSliced();
+                            classicScoreValue.setText("" + classicLogic.getScore());
+                        }
+                    }
+                    l[0] = true;
+
+                });
+
+                root.getChildren().add(object);
+
+
+                translateTransitions.get(finalI).setOnFinished(e ->
                 {
-                    if(!b)
-                    {
-                   throwObjectsInWaves(root,firstHeart,secondHeart,thirdHeart,classicScoreValue,classicLogic.getNumberOfFruitsInWave(),classicLevelValue);
+
+                    if (object.getImage() == gameObjectList.get(finalI).getUnCutBufferedImageImages().getImage()) {
+                        if (!gameObjectList.get(finalI).getName().contains("Bomb")) {
+                            classicLogic.removeLive();
+                            adjustHearts(firstHeart, secondHeart, thirdHeart);
+
+                        }
+
                     }
 
+                    count.getAndIncrement();
 
 
 
-                }
-
-            });
+                        if (count.get() == numberOfFruits) {
 
 
+                            throwObjectsInWaves(root, firstHeart, secondHeart, thirdHeart, classicScoreValue, classicLogic.getNumberOfFruitsInWave(), classicLevelValue);
 
+
+                        }
+
+                });
+            }
         }
 
 
 
-    }
 
-
-
-    private boolean adjustHearts(ImageView firstHeart, ImageView secondHeart, ImageView thirdHeart)
+    private void adjustHearts(ImageView firstHeart, ImageView secondHeart, ImageView thirdHeart)
     {
         if(classicLogic.getLives()==1)
         {
@@ -290,15 +302,16 @@ private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         }
         else if(classicLogic.getLives()==0)
         {
+
             firstHeart.setVisible(false);
-            System.out.println("gameover");
+            classicGameOverGui.start();
             classicLogic.resetGame();
-            menu.start();
-            return true;
+            classicGameStage.close();
+
         }
 
 
-        return false;
+
     }
 
 
