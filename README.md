@@ -3,6 +3,8 @@ Before playing our game, There are some tips you have to know:
 We currently support classic mode only.
 You shouldn't press the mouse while slicing the fruits,
 You slice the fruits or bombs by just moving the mouse over it.
+If you moved the mouse while holding left click it wont slice,
+mouse will just draw glowy lines.
 
 Report includes detailed instructions on how to play.
 
