@@ -62,7 +62,7 @@ public class ClassicGameOverGui {
 		classicHighScore.setFont(new Font("Arial Bold", 30));
 		classicHighScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
 		
-		Label classicHighScoreValue = new Label("0");
+		Label classicHighScoreValue = new Label(""+classicLogic.getHighScore());
 		classicHighScoreValue.setLayoutX(600);
 		classicHighScoreValue.setLayoutY(400);
 		classicHighScoreValue.setFont(new Font("Arial Bold", 32));

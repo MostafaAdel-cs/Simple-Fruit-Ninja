@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 
 public class HighScoresGui {
 
-    ImageGetter imageGetter=ImageGetter.createImageGetter();
-    Stage highScoresStage;
-    Menu menu;
-    ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
+    private ImageGetter imageGetter=ImageGetter.createImageGetter();
+    private Stage highScoresStage;
+    private Menu menu;
+    private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 
     public HighScoresGui(Stage highScoresStage ) {
         this.highScoresStage = highScoresStage;
@@ -44,7 +44,7 @@ public class HighScoresGui {
         classicHighScore.setFont(new Font("Arial Bold", 30));
         classicHighScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
 
-        Label classicScoreValue = new Label("0");
+        Label classicScoreValue = new Label(""+classicLogic.getHighScore());
         classicScoreValue.setLayoutX(600);
         classicScoreValue.setLayoutY(325);
         classicScoreValue.setFont(new Font("Arial Bold", 32));

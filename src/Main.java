@@ -1,4 +1,5 @@
 
+import Control.ClassicLogic;
 import View.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -23,7 +24,8 @@ public class Main extends Application {
 
         ClassicGameGui classicGame=new ClassicGameGui(primaryStage);
         HighScoresGui highScores=new HighScoresGui(primaryStage);
-
+        ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
+        classicLogic.loadHighScore();
 
         Menu menu = new Menu(primaryStage,highScores,classicGame);
         classicGameOverGui.setMenu(menu);

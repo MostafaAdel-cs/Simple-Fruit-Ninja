@@ -76,6 +76,8 @@ ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         Effect glow = new Glow(1.0);
         path.setEffect(glow);
 
+
+
         EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
             @Override

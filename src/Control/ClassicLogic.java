@@ -4,6 +4,7 @@ import Model.Game.ClassicGame;
 import Model.GameObjects.GameObject;
 import Model.GameObjects.GameObjectFactory;
 
+import javax.xml.bind.JAXBException;
 import java.util.Random;
 
 public class ClassicLogic {
@@ -78,4 +79,25 @@ public void allLivesLost()
     {
         game.decrementNumberOfFruits();
     }
+
+    public int getHighScore()
+    {
+        return game.getHighScore();
+    }
+    public void setHighScore( int currentScore)
+    {
+        if(currentScore>game.getHighScore())
+        {
+            game.setHighScore(currentScore);
+            game.saveHighScore();
+        }
+    }
+    public void loadHighScore()
+    {
+        game.loadHighScore();
+    }
+
+
+
+
 }

@@ -2,7 +2,19 @@ package Model.Game;
 
 import Model.GameObjects.GameObject;
 import Model.GameObjects.GameObjectFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.util.Random;
 
 public class ClassicGame {
@@ -125,5 +137,77 @@ public class ClassicGame {
         if(numberOfFruitsInLevel==0)
             levelUp();
     }
+
+    public void saveHighScore()
+    {
+        try {
+            File xmlFile = new File("Scores.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(xmlFile);
+            DOMSource source = new DOMSource(doc);
+
+
+            NodeList Scores = doc.getElementsByTagName("Classic");
+
+            for (int i = 0; i < Scores.getLength(); i++)
+            {
+
+                Node scoresValues = Scores.item(i);
+
+                Element element = (Element) scoresValues;
+
+
+
+                element.getElementsByTagName("classicHighScore").item(0).setTextContent(""+highScore);
+
+            }
+
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            StreamResult file = new StreamResult(new File("Scores.xml"));
+            transformer.transform(source, file);
+
+
+        }catch(Exception e) {System.out.println("Error in saving !");}
+    }
+
+
+    public void loadHighScore()
+    {
+        try {
+            File xmlFile = new File("Scores.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(xmlFile);
+            DOMSource source = new DOMSource(doc);
+
+
+            NodeList Scores = doc.getElementsByTagName("Classic");
+
+            for (int i = 0; i < Scores.getLength(); i++)
+            {
+
+                Node scoresValues = Scores.item(i);
+
+                Element element = (Element) scoresValues;
+
+               highScore= Integer.parseInt (element.getElementsByTagName("classicHighScore").item(0).getTextContent());
+
+            }
+
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            StreamResult file = new StreamResult(new File("Scores.xml"));
+            transformer.transform(source, file);
+
+
+        }catch(Exception e) {System.out.println("Error in reading !");}
+    }
+
+
+
 
 }

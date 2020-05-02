@@ -322,7 +322,7 @@ private ClassicGameOverGui classicGameOverGui;
         }
         else if(classicLogic.getLives()==0)
         {
-
+            classicLogic.setHighScore(classicLogic.getScore());
             firstHeart.setVisible(false);
             audioClip1.play();
             classicGameOverGui.start();
