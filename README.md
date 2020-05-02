@@ -6,7 +6,7 @@ You slice the fruits or bombs by just moving the mouse over it.
 
 Report includes detailed instructions on how to play.
 
-Highscore is saved in a file, so we read it whenever we need it.
+Highscore is saved in a file, so we read it whenever we need.
 
 We applied cool music and sound effects when you slice or miss fruits.
 
