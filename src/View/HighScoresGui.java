@@ -40,27 +40,16 @@ public class HighScoresGui {
 
         Label classicHighScore = new Label("Classic Mode High Score: ");
         classicHighScore.setLayoutX(180);
-        classicHighScore.setLayoutY(200);
+        classicHighScore.setLayoutY(325);
         classicHighScore.setFont(new Font("Arial Bold", 30));
         classicHighScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
 
         Label classicScoreValue = new Label("0");
         classicScoreValue.setLayoutX(600);
-        classicScoreValue.setLayoutY(200);
+        classicScoreValue.setLayoutY(325);
         classicScoreValue.setFont(new Font("Arial Bold", 32));
         classicScoreValue.setTextFill(Color.web("#00FFFF", 1)); //Aqua color
 
-        Label arcadeHighScore = new Label("Arcade Mode High Score: ");
-        arcadeHighScore.setLayoutX(180);
-        arcadeHighScore.setLayoutY(400);
-        arcadeHighScore.setFont(new Font("Arial Bold", 30));
-        arcadeHighScore.setTextFill(Color.web("#FFFF00", 1)); //Yellow color
-
-        Label arcadeScoreValue = new Label("0");
-        arcadeScoreValue.setLayoutX(600);
-        arcadeScoreValue.setLayoutY(400);
-        arcadeScoreValue.setFont(new Font("Arial Bold", 32));
-        arcadeScoreValue.setTextFill(Color.web("#00FFFF", 1)); //Aqua color
 
 
         ImageView menu = new ImageView(imageGetter.getBack().getImage());
@@ -77,7 +66,7 @@ public class HighScoresGui {
 
 
 
-        root.getChildren().addAll(bg,classicHighScore,classicScoreValue,arcadeHighScore,arcadeScoreValue,menu);
+        root.getChildren().addAll(bg,classicHighScore,classicScoreValue,menu);
 
     }
 }
