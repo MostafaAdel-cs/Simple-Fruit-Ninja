@@ -229,8 +229,7 @@ private ClassicGameOverGui classicGameOverGui;
 
                 translateTransitions.get(finalI).setByY(-gameObjectList.get(finalI).getMaxHeight());    //max height ============adjust here
 
-
-                // mtl3b4 hna
+                
                 duration = Duration.millis(10000);
                 RotateTransition rotateTransition = new RotateTransition(duration, object);
                 rotateTransition.setByAngle(500);
