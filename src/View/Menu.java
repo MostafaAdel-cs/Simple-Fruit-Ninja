@@ -11,6 +11,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -18,26 +20,37 @@ import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+
 public class Menu {
 
 Stage menuStage;
 HighScoresGui highScores;
-ArcadeGameGui arcadeGame;
+Boolean songIsPlaying=false;
+
 ClassicGameGui classicGameGui;
 ImageGetter logic= ImageGetter.createImageGetter();
 ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
+    String musicFile="FruitNinjaAudio\\MenuMusic.mp3";
+    Media mediaPlayer=new Media(new File(musicFile).toURI().toString());
+    MediaPlayer mediaPlayer1=new MediaPlayer(mediaPlayer);
 
 
-    public Menu(Stage menuStage, HighScoresGui highScores, ArcadeGameGui arcadeGame, ClassicGameGui classicGame) {
+    public Menu(Stage menuStage, HighScoresGui highScores, ClassicGameGui classicGame) {
         this.menuStage = menuStage;
         this.highScores = highScores;
-        this.arcadeGame = arcadeGame;
         this.classicGameGui = classicGame;
     }
 
-    public void start()
-    {
+    public void start() {
 
+
+        if (!songIsPlaying)
+        {
+            songIsPlaying=true;
+            mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer1.play();
+    }
         menuStage.setTitle("Fruit Ninja");
         menuStage.centerOnScreen();
         menuStage.setResizable(false);
@@ -105,7 +118,7 @@ ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         ImageView classic = new ImageView(logic.getStartClassic().getImage());
         classic.setScaleX(1.8);
         classic.setScaleY(1.8);
-        classic.setX(480);
+        classic.setX(300);
         classic.setY(400);
 
         Duration duration = Duration.millis(10000);
@@ -123,43 +136,19 @@ ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         scaleTransition.play();
 
         classic.setOnMouseClicked(e->{
+            mediaPlayer1.stop();
+            songIsPlaying=false;
             classicLogic.startGame();
             classicGameGui.start();
 
         });
 
 
-        ImageView arcade = new ImageView(logic.getStartArcade().getImage());
-        arcade.setScaleX(1.8);
-        arcade.setScaleY(1.8);
-        arcade.setX(250);
-        arcade.setY(400);
-        Duration duration3 = Duration.millis(10000);
-        RotateTransition rotateTransition2 = new RotateTransition(duration3, arcade);
-        rotateTransition2.setByAngle(360);
-        rotateTransition2.setCycleCount(Timeline.INDEFINITE);
-        rotateTransition2.play();
-
-        Duration duration4 = Duration.millis(600);
-        ScaleTransition scaleTransition2 = new ScaleTransition(duration4, arcade);
-        scaleTransition2.setByX(0.3);
-        scaleTransition2.setByY(0.3);
-        scaleTransition2.setAutoReverse(true);
-        scaleTransition2.setCycleCount(Timeline.INDEFINITE);
-        scaleTransition2.play();
-
-        arcade.setOnMouseClicked(e -> {
-
-            arcadeGame.start();
-
-
-        });
-
 
         ImageView HS = new ImageView(logic.getHighScore().getImage());
         HS.setScaleX(0.4);
         HS.setScaleY(0.4);
-        HS.setX(580);
+        HS.setX(400);
         HS.setY(280);
         Duration duration5 = Duration.millis(1000);
         ScaleTransition scaleTransition3 = new ScaleTransition(duration5, HS);
@@ -184,7 +173,7 @@ ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
         man.setY(100);
 
 
-        root.getChildren().addAll(bg,quit,classic,arcade,HS,man,path,title);
+        root.getChildren().addAll(bg,quit,classic,HS,man,path,title);
     }
 
 

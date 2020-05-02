@@ -1,5 +1,6 @@
 package View;
 
+import Control.ClassicLogic;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ public class HighScoresGui {
     ImageGetter imageGetter=ImageGetter.createImageGetter();
     Stage highScoresStage;
     Menu menu;
+    ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 
     public HighScoresGui(Stage highScoresStage ) {
         this.highScoresStage = highScoresStage;

@@ -5,13 +5,17 @@ import Model.GameObjects.GameObjectFactory;
 
 import java.util.Random;
 
-public class ClassicGame implements GameActions{
+public class ClassicGame {
+
+    private int highScore;
+
 
 
     private static ClassicGame instance;
     private ClassicGame() {
-
     }
+
+
 
     public static ClassicGame getClassicGame()
     {
@@ -19,6 +23,8 @@ public class ClassicGame implements GameActions{
             instance=new ClassicGame();
         return instance;
     }
+
+
 
 
     private Random random=new Random();
@@ -30,14 +36,25 @@ public class ClassicGame implements GameActions{
 
 
 
-    @Override
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+
+
     public void startGame() {
 
         this.lives=3;
         this.level=1;
-        this.numberOfFruitsInLevel=random.nextInt(40)+40;   //the minimum number of fruits in first level is 40 and max is 80
+        this.numberOfFruitsInLevel=random.nextInt(20)+20;   //the minimum number of fruits in first level is 40 and max is 80
         this.score=0;
     }
+
+
 
 
     public int getNumberInWave()
@@ -59,17 +76,10 @@ public class ClassicGame implements GameActions{
         return numberOfFruitsInWave;
     }
 
-    @Override
-    public void saveGame() {
 
-    }
 
-    @Override
-    public void loadGame() {
 
-    }
 
-    @Override
     public void resetGame() {
     startGame();
     }
@@ -80,7 +90,7 @@ public class ClassicGame implements GameActions{
     {
 
         level++;
-        numberOfFruitsInLevel=random.nextInt(40)+40*level;
+        numberOfFruitsInLevel=random.nextInt(20)+20*level;
     }
 
     public void minusLives(int lives)

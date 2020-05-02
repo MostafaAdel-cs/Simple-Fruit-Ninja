@@ -12,6 +12,9 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -20,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,12 +38,18 @@ private ImageGetter imageGetter=ImageGetter.createImageGetter();
 private ClassicLogic classicLogic=ClassicLogic.createClassicLogic();
 private ClassicGameOverGui classicGameOverGui;
 
-
-
+  private  String sliceSound="FruitNinjaAudio\\sliceSound.mp3";
+  private AudioClip audioClip=new AudioClip(new File(sliceSound).toURI().toString());
+    private  String specialBomb="FruitNinjaAudio\\SpecialBombSound.mp3";
+    private AudioClip audioClip1=new AudioClip(new File(specialBomb).toURI().toString());
+    private  String bombHit="FruitNinjaAudio\\BombHit.mp3";
+    private AudioClip audioClip2=new AudioClip(new File(bombHit).toURI().toString());
+    private  String fruitMiss="FruitNinjaAudio\\FruitMiss.mp3";
+    private AudioClip audioClip3=new AudioClip(new File(fruitMiss).toURI().toString());
 
 
     public ClassicGameGui(Stage mainStage) {
-        this.mainStage = classicGameStage;
+        this.mainStage = mainStage;
     }
 
     public void setMenu(Menu menu) {
@@ -52,7 +62,10 @@ private ClassicGameOverGui classicGameOverGui;
 
     public void start()
     {
-        mainStage.hide();
+
+
+
+        mainStage.close();
         classicGameStage.setTitle("Fruit Ninja");
         classicGameStage.centerOnScreen();
         classicGameStage.setResizable(false);
@@ -183,7 +196,7 @@ private ClassicGameOverGui classicGameOverGui;
             for (int i = 0; i < numberOfFruits; i++) {
 
 
-                System.out.println(numberOfFruits);
+
                 int finalI = i;
 
                 if (r.nextInt(2) == 0) {
@@ -234,20 +247,24 @@ private ClassicGameOverGui classicGameOverGui;
 
                 object.setOnMouseMoved(e -> {
 
+
                     object.setImage(gameObjectList.get(finalI).getCutBufferedImageImages().getImage());
 
                     if (!l[0]) {
-                        if (gameObjectList.get(finalI).getName().contentEquals("Bomb")) {
 
+                        if (gameObjectList.get(finalI).getName().contentEquals("Bomb")) {
+                            audioClip2.play();
                             classicLogic.removeLive();
                             adjustHearts(firstHeart, secondHeart, thirdHeart);
 
                         } else if (gameObjectList.get(finalI).getName().contentEquals("SpecialBomb")) {
+
                             classicLogic.allLivesLost();
                             adjustHearts(firstHeart, secondHeart, thirdHeart);
                         } else {
                             classicLogic.addScore();
                             classicLogic.fruitSliced();
+                            audioClip.play();
                             classicScoreValue.setText("" + classicLogic.getScore());
                         }
                     }
@@ -263,6 +280,9 @@ private ClassicGameOverGui classicGameOverGui;
 
                     if (object.getImage() == gameObjectList.get(finalI).getUnCutBufferedImageImages().getImage()) {
                         if (!gameObjectList.get(finalI).getName().contains("Bomb")) {
+                            if(classicGameStage.isShowing()) {
+                                audioClip3.play();
+                            }
                             classicLogic.removeLive();
                             adjustHearts(firstHeart, secondHeart, thirdHeart);
 
@@ -304,6 +324,7 @@ private ClassicGameOverGui classicGameOverGui;
         {
 
             firstHeart.setVisible(false);
+            audioClip1.play();
             classicGameOverGui.start();
             classicLogic.resetGame();
             classicGameStage.close();

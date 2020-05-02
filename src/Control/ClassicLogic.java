@@ -9,6 +9,7 @@ import java.util.Random;
 public class ClassicLogic {
 
 
+
     private static ClassicLogic instance;
 
     private GameObjectFactory gameObjectFactory=GameObjectFactory.createObjectFactory();
