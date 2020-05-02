@@ -15,4 +15,4 @@ We all worked on everything in the project so its hard to say how we split it,
 But most of the time we shared our laptop screens and worked together.
 We used GITLAB to share our changes.
 
-Thank you for taking time to read and I hope you enjoy our simple game :)
+Thank you for taking time to read and we hope you enjoy our simple game :)
