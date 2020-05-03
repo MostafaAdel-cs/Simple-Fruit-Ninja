@@ -12,6 +12,9 @@ Highscore is saved in a file, so we read it whenever we need.
 
 We applied cool music and sound effects when you slice or miss fruits.
 
+It is possible to face bugs as we didn't make enough tests for the game,
+Hopefully it works well as the last time we tried it :)
+
 The project wasn't complicated too much and we enjoyed working on it.
 We all worked on everything in the project so its hard to say how we split it,
 But most of the time we shared our laptop screens and worked together.
